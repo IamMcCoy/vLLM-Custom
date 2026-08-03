@@ -1,0 +1,13 @@
+.git
+.gitignore
+.idea
+.vscode
+**/__pycache__
+**/*.pyc
+*.tar
+*.tar.gz
+*.log
+.venv
+venv
+models
+weights
