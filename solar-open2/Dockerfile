@@ -68,20 +68,20 @@ RUN set -eux; \
     done
 
 # 5) Global-Pruned 패치 적용 (레이어별 expert 수 지원)
-COPY patch/solar_open2.py /tmp/patch/solar_open2.py
+COPY plugin/solar_open2.py /tmp/plugin/solar_open2.py
 
 RUN set -eux; \
     VLLM_PKG_DIR="$(cat /opt/vllm_pkg_dir)"; \
     TARGET="${VLLM_PKG_DIR}/model_executor/models/solar_open2.py"; \
     cp "${TARGET}" "${TARGET}.orig"; \
-    cp /tmp/patch/solar_open2.py "${TARGET}"; \
+    cp /tmp/plugin/solar_open2.py "${TARGET}"; \
     /opt/venv/bin/python -m py_compile "${TARGET}"; \
     if cmp -s "${TARGET}" "${TARGET}.orig"; then \
         echo "WARNING: patch is identical to upstream file"; \
     else \
         echo "patch applied: ${TARGET}"; \
     fi; \
-    rm -rf /tmp/patch
+    rm -rf /tmp/plugin
 
 # 6) 런타임 컴파일 도구 (Triton: gcc / FlashInfer: nvcc)
 RUN apt-get update && apt-get install -y --allow-change-held-packages --no-install-recommends \

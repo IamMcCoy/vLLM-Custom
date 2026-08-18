@@ -41,15 +41,15 @@ BUILD_ARGS := --build-arg BASE_IMAGE=$(BASE_IMAGE) --build-arg UV_IMAGE=$(UV_IMA
 .DEFAULT_GOAL := build
 .PHONY: patch build push-image release rebuild verify run shell print-image clean help
 
-## patch       : 모델 저장소의 patch/solar_open2.py 를 빌드 컨텍스트로 복사
+## patch       : 모델 저장소의 patch/solar_open2.py 를 빌드 컨텍스트(plugin/)로 복사
 patch:
-> mkdir -p patch
-> cp $(MODEL_DIR)/patch/solar_open2.py patch/solar_open2.py
-> @ls -l patch/solar_open2.py
+> mkdir -p plugin
+> cp $(MODEL_DIR)/patch/solar_open2.py plugin/solar_open2.py
+> @ls -l plugin/solar_open2.py
 
 ## build       : 이미지 빌드 및 태깅
 build:
-> @test -f patch/solar_open2.py || { echo "ERROR: patch/solar_open2.py 가 없습니다. 'make patch' 를 먼저 실행하십시오."; exit 1; }
+> @test -f plugin/solar_open2.py || { echo "ERROR: plugin/solar_open2.py 가 없습니다. 'make patch' 를 먼저 실행하십시오."; exit 1; }
 > DOCKER_BUILDKIT=1 docker build --platform $(PLATFORM) --progress $(PROGRESS) $(NO_CACHE) -f $(DOCKERFILE) $(BUILD_ARGS) -t $(IMAGE) $(CONTEXT)
 > @echo "built: $(IMAGE)"
 
